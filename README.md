@@ -1,2 +1,2 @@
 # fastkit-examples
-Provides examples for fastkit packages 
+Provides examples for FastKit packages 
