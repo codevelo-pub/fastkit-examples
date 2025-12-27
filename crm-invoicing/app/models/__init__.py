@@ -1,5 +1,7 @@
 from fastkit_core.database import Base
+from app.models.user import User
 
 __all__ = [
-    'Base'
+    'Base',
+    'User'
 ]
