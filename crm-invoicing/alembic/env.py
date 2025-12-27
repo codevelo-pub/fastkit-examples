@@ -6,9 +6,7 @@ import os
 import sys
 from alembic import context
 from dotenv import load_dotenv
-from fastkit_core.config import ConfigManager
-from fastkit_core.database import get_db_manager, init_database
-from ..app.models import Base
+from app.models import Base
 
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -31,30 +29,32 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-def get_url():
-    """
-    Get database URL from FastKit configuration.
+def get_url() -> str:
+    """Build database URL from environment variables."""
+    driver = os.getenv('DB_DRIVER', 'postgresql')
+    user = os.getenv('DB_USER', 'fastkit')
+    password = os.getenv('DB_PASSWORD', 'fastkit')
+    host = os.getenv('DB_HOST', 'localhost')
+    port = os.getenv('DB_PORT', '5432')
+    database = os.getenv('DB_NAME', 'fastkit')
 
-    This reads from your .env file via FastKit's ConfigManager.
-    """
-    # Initialize FastKit config
-    fastkit_config = ConfigManager(modules=['database'], auto_load=True)
+    if driver == 'postgresql':
+        url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
+    elif driver == 'sqlite':
+        url = f"sqlite:///{database}"
+    else:
+        raise ValueError(f"Unsupported driver: {driver}")
 
-    # Initialize database (this builds the connection URL)
-    init_database(fastkit_config)
+    safe_url = url.replace(password, '***') if password else url
 
-    # Get the database manager
-    db_manager = get_db_manager()
-
-    # Return the connection URL
-    return str(db_manager.engine.url)
+    return url
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -87,24 +87,36 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    # Create configuration for SQLAlchemy
-    configuration = config.get_section(config.config_ini_section)
-    configuration["sqlalchemy.url"] = get_url()
+    url = get_url()
 
+    # Build configuration dict properly
+    configuration = {
+        'sqlalchemy.url': url
+    }
+
+    # Add any settings from alembic.ini
+    ini_section = config.get_section(config.config_ini_section)
+    if ini_section:
+        configuration.update(ini_section)
+
+    # Create engine
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        configuration,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 
+    # Run migrations
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
+            compare_type=True,
+            compare_server_default=True,
         )
 
         with context.begin_transaction():
             context.run_migrations()
-
 
 if context.is_offline_mode():
     run_migrations_offline()
