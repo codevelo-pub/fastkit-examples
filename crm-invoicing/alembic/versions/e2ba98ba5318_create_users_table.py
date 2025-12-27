@@ -7,6 +7,7 @@ Create Date: 2025-12-27 10:40:27.460705
 """
 from typing import Sequence, Union
 
+from fastapi_users_db_sqlalchemy import generics
 from alembic import op
 import sqlalchemy as sa
 
@@ -25,7 +26,7 @@ def upgrade() -> None:
     sa.Column('first_name', sa.String(length=100), nullable=True),
     sa.Column('last_name', sa.String(length=100), nullable=True),
     sa.Column('locale', sa.String(length=5), nullable=False),
-    sa.Column('id', fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+    sa.Column('id', generics.GUID(), nullable=False),
     sa.Column('email', sa.String(length=320), nullable=False),
     sa.Column('hashed_password', sa.String(length=1024), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
