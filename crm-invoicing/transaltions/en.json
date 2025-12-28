@@ -1,0 +1,11 @@
+{
+  "validation": {
+    "product": {
+      "name": {
+        "required": "Name must have at least one language",
+        "english_required": "English name (key 'en') is required"
+      },
+      "invalid_language_code": "Invalid language code: {key}. Must be one of {valid_langs}"
+    }
+  }
+}
