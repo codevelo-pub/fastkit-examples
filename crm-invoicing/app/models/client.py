@@ -9,5 +9,3 @@ class Client(IntIdMixin, BaseWithTimestamps, SoftDeleteMixin):
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] =  mapped_column(String(255))
     language = Column(Enum(Languages, name="language"), nullable=False)
-
-
