@@ -1,8 +1,11 @@
-from sqlalchemy.orm import Mapped, mapped_column, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Float, ForeignKey
 from fastkit_core.database import Base, IntIdMixin
-from app.models.invoice import Invoice
-from app.models.product import Product
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.invoice import Invoice
+    from app.models.product import Product
 
 class InvoiceItem(IntIdMixin, Base):
     __tablename__ = "invoice_items"

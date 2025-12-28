@@ -1,7 +1,10 @@
 from sqlalchemy import JSON, String, Numeric
+from typing import TYPE_CHECKING
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from fastkit_core.database import BaseWithTimestamps, SoftDeleteMixin, TranslatableMixin, IntIdMixin, SlugMixin
-from app.models.invoice_item import InvoiceItem
+
+if TYPE_CHECKING:
+    from app.models.invoice_item import InvoiceItem
 
 class Product(IntIdMixin, BaseWithTimestamps, SoftDeleteMixin, TranslatableMixin, SlugMixin):
     __tablename__ = "products"

@@ -1,8 +1,11 @@
+from typing import TYPE_CHECKING
 from sqlalchemy import String, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from fastkit_core.database import BaseWithTimestamps, SoftDeleteMixin, IntIdMixin
 from app.models.enums import Languages
-from app.models.invoice import Invoice
+
+if TYPE_CHECKING:
+    from app.models.invoice import Invoice
 
 class Client(IntIdMixin, BaseWithTimestamps, SoftDeleteMixin):
     __tablename__ = "clients"
@@ -10,7 +13,7 @@ class Client(IntIdMixin, BaseWithTimestamps, SoftDeleteMixin):
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] =  mapped_column(String(255))
     language: Mapped[Languages] = mapped_column(
-        Enum(Languages, name="client_language"),
+        Enum(Languages, name="language"),
         default=Languages.EN,
         nullable=False
     )

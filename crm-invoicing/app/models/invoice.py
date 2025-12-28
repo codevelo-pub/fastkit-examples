@@ -3,8 +3,11 @@ from fastkit_core.database import BaseWithTimestamps, SoftDeleteMixin, IntIdMixi
 from sqlalchemy import String, Enum, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.enums import InvoicesStatus
-from app.models.client import Client
-from app.models.invoice_item import InvoiceItem
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.client import Client
+    from app.models.invoice_item import InvoiceItem
 
 class Invoice(IntIdMixin, BaseWithTimestamps, SoftDeleteMixin):
     __tablename__ = "invoices"
@@ -13,7 +16,7 @@ class Invoice(IntIdMixin, BaseWithTimestamps, SoftDeleteMixin):
     client_id: Mapped[int] = mapped_column(ForeignKey("clients.id"))
     pdf_path: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     status: Mapped[InvoicesStatus] = mapped_column(
-        Enum(InvoicesStatus, name="invoice_status"),
+        Enum(InvoicesStatus, name="status"),
         default=InvoicesStatus.PENDING,
         nullable=False
     )
