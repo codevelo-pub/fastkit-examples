@@ -1,18 +1,49 @@
-from typing import Optional
-
 from fastkit_core.validation import BaseSchema
 from app.models.enums import Languages
+from pydantic import Field, EmailStr
+from datetime import datetime
+
 
 class ClientCreate(BaseSchema):
-    name: str
-    description: Optional[str] = None
-    language: Languages
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    address: Optional[str] = None
-    city: Optional[str] = None
-    country: Optional[str] = None
-    postal_code: Optional[str] = None
+    name: str = Field(min_length=1, max_length=255)
+    description: str | None = Field(None, max_length=255)
+    language: Languages = Field(default=Languages.EN)
 
-class ClientUpdate(ClientCreate):
-    pass
+    email: EmailStr | None = None
+    phone: str | None = Field(None, max_length=50)
+
+    address: str | None = Field(None, max_length=500)
+    city: str | None = Field(None, max_length=100)
+    country: str | None = Field(None, max_length=100)
+    postal_code: str | None = Field(None, max_length=20)
+
+
+class ClientUpdate(BaseSchema):
+    """Schema for updating a client (all fields optional)."""
+    name: str | None = Field(None, min_length=1, max_length=255)
+    description: str | None = Field(None, max_length=255)
+    language: Languages | None = None
+    email: EmailStr | None = None
+    phone: str | None = Field(None, max_length=50)
+    address: str | None = Field(None, max_length=500)
+    city: str | None = Field(None, max_length=100)
+    country: str | None = Field(None, max_length=100)
+    postal_code: str | None = Field(None, max_length=20)
+
+
+class ClientResponse(BaseSchema):
+    """Schema for client in responses."""
+    id: int
+    name: str
+    description: str | None
+    language: Languages
+    email: str | None
+    phone: str | None
+    address: str | None
+    city: str | None
+    country: str | None
+    postal_code: str | None
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
