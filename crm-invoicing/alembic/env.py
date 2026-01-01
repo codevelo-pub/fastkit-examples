@@ -7,6 +7,8 @@ import sys
 from alembic import context
 from dotenv import load_dotenv
 from app.models import Base
+from fastkit_core.database import build_database_url
+from fastkit_core.config import  ConfigManager
 
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -36,25 +38,6 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-def get_url() -> str:
-    """Build database URL from environment variables."""
-    driver = os.getenv('DB_DRIVER', 'postgresql')
-    user = os.getenv('DB_USER', 'fastkit')
-    password = os.getenv('DB_PASSWORD', 'fastkit')
-    host = os.getenv('DB_HOST', 'localhost')
-    port = os.getenv('DB_PORT', '5432')
-    database = os.getenv('DB_NAME', 'fastkit')
-
-    if driver == 'postgresql':
-        url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
-    elif driver == 'sqlite':
-        url = f"sqlite:///{database}"
-    else:
-        raise ValueError(f"Unsupported driver: {driver}")
-
-    safe_url = url.replace(password, '***') if password else url
-
-    return url
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -87,7 +70,8 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    url = get_url()
+    configuration = ConfigManager(modules=['database'])
+    url = build_database_url(configuration)
 
     # Build configuration dict properly
     configuration = {
