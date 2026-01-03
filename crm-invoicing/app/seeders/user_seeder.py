@@ -4,7 +4,7 @@ from fastkit_core.database import get_db_manager, Repository, init_database
 from fastkit_core.config import ConfigManager
 from app.models import User
 
-configuration = ConfigManager(modules=['database', 'auth'], config_package='config')
+configuration = ConfigManager(modules=['database', 'auth'])
 password_helper = PasswordHelper()
 
 def seed_admin_user(session: Session) -> User:
