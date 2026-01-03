@@ -12,7 +12,8 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy.orm import Session
 from app.models import User
 from fastkit_core.database import get_db
-from fastkit_core.config import config
+from fastkit_core.config import ConfigManager
+configuration = ConfigManager(modules=['auth'])
 
 
 # ============================================================================
@@ -39,8 +40,8 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     - Custom hooks
     """
 
-    reset_password_token_secret = config('auth.RESET_PASSWORD_TOKEN_SECRET')
-    verification_token_secret = config('auth.VERIFICATION_TOKEN_SECRET')
+    reset_password_token_secret = configuration.get('auth.RESET_PASSWORD_TOKEN_SECRET')
+    verification_token_secret = configuration.get('auth.VERIFICATION_TOKEN_SECRET')
 
     async def on_after_register(
             self,
@@ -95,8 +96,8 @@ def get_jwt_strategy() -> JWTStrategy:
     Tokens are valid for configured lifetime (default: 1 hour).
     """
     return JWTStrategy(
-        secret=config('auth.JWT_TOKEN_SECRET'),
-        lifetime_seconds=config('auth.JWT_LIFETIME_SECONDS', 3600)
+        secret=configuration.get('auth.JWT_TOKEN_SECRET'),
+        lifetime_seconds=configuration.get('auth.JWT_LIFETIME_SECONDS', 3600)
     )
 
 
