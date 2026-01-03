@@ -28,3 +28,5 @@ JWT_REFRESH_LIFETIME_SECONDS = int(os.getenv(
     '2592000'  # 30 days default
 ))
 
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'admin@example.com')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'admin123')
