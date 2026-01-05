@@ -11,7 +11,7 @@ from fastapi_users.authentication import (
 from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy.orm import Session
 from app.models import User
-from fastkit_core.database import get_db
+from fastkit_core.database import get_async_db
 from fastkit_core.config import ConfigManager
 configuration = ConfigManager(modules=['auth'])
 
@@ -20,11 +20,11 @@ configuration = ConfigManager(modules=['auth'])
 # User Database (uses FastKit's session)
 # ============================================================================
 
-async def get_user_db(session: Session = Depends(get_db)):
+async def get_user_db(session: Session = Depends(get_async_db)):
     """
     Get FastAPI Users database adapter.
 
-    ⭐ Uses FastKit's get_db for session management!
+    ⭐ Uses FastKit's get_async_db for session management!
     """
     yield SQLAlchemyUserDatabase(session, User)
 
