@@ -7,4 +7,4 @@ from app.schemas import ClientCreate, ClientUpdate, ClientResponse
 class ClientService(AsyncBaseCrudService[Client, ClientCreate, ClientUpdate, ClientResponse]):
     def __init__(self, session: Session):
         repository = AsyncRepository(Client, session)
-        super().__init__(repository)
+        super().__init__(repository, response_schema=ClientResponse)

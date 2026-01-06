@@ -1,7 +1,6 @@
 from fastkit_core.validation import BaseSchema
 from app.models.enums import Languages
 from pydantic import Field, EmailStr
-from datetime import datetime
 
 
 class ClientCreate(BaseSchema):
@@ -36,14 +35,11 @@ class ClientResponse(BaseSchema):
     id: int
     name: str
     description: str | None
-    language: Languages
     email: str | None
     phone: str | None
     address: str | None
     city: str | None
     country: str | None
     postal_code: str | None
-    created_at: datetime
-    updated_at: datetime
 
     model_config = {"from_attributes": True}

@@ -7,5 +7,8 @@
       },
       "invalid_language_code": "Invalid language code: {key}. Must be one of {valid_langs}"
     }
+  },
+  "clients": {
+    "create": "The client is successfully crated"
   }
 }
