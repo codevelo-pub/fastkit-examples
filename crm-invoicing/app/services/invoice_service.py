@@ -1,10 +1,10 @@
-from fastkit_core.services import BaseCrudService
+from fastkit_core.services import AsyncBaseCrudService
 from fastkit_core.database import Repository
 from sqlalchemy.orm import Session
 from app.models import Invoice
-from app.schemas import InvoiceCreate, InvoiceUpdate
+from app.schemas import InvoiceCreate, InvoiceUpdate, InvoiceResponse
 
-class InvoiceService(BaseCrudService[Invoice, InvoiceCreate, InvoiceUpdate]):
+class InvoiceService(AsyncBaseCrudService[Invoice, InvoiceCreate, InvoiceUpdate, InvoiceResponse]):
     def __init__(self, session: Session):
         repository = Repository(Invoice, session)
         super().__init__(repository)

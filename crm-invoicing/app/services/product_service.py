@@ -1,10 +1,10 @@
-from fastkit_core.services import BaseCrudService
+from fastkit_core.services import AsyncBaseCrudService
 from fastkit_core.database import Repository
 from sqlalchemy.orm import Session
 from app.models import Product
-from app.schemas import ProductCreate, ProductUpdate
+from app.schemas import ProductCreate, ProductUpdate, ProductResponse
 
-class ProductService(BaseCrudService[Product, ProductCreate, ProductUpdate]):
+class ProductService(AsyncBaseCrudService[Product, ProductCreate, ProductUpdate, ProductResponse]):
     def __init__(self, session: Session):
         repository = Repository(Product, session)
         super().__init__(repository)

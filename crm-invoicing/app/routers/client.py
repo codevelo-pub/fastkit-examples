@@ -5,7 +5,7 @@ from fastkit_core.database import get_async_db
 from sqlalchemy.orm import Session
 from app.models import Client
 from starlette.responses import JSONResponse
-from app.schemas import ClientCreate, ClientUpdate, ClientResponse
+from app.schemas import ClientCreate, ClientUpdate
 from app.services import ClientService
 
 router = APIRouter(
@@ -23,10 +23,5 @@ async def index(
         per_page: int = 10,
         service: ClientService = Depends(get_service)
 ) -> JSONResponse:
-
-    clients, meta = service.paginate(page=page, per_page=per_page)
-
-    return paginated_response(
-        items= [ClientResponse.from_orm(c).model_dump() for c in clients],
-        pagination=meta
-    )
+    clients, meta = await service.paginate(page=page, per_page=per_page)
+    return paginated_response(items=clients, pagination=meta)
