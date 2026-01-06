@@ -2,7 +2,7 @@ from fastkit_core.validation import BaseSchema
 from app.models.enums import InvoicesStatus
 from app.schemas.invoice_item import InvoiceItemCreate, InvoiceItemResponse
 from pydantic import Field
-import datetime
+from datetime import datetime
 
 
 class InvoiceCreate(BaseSchema):

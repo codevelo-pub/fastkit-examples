@@ -11,5 +11,5 @@ __all__ = [
     'ClientCreate', 'ClientUpdate', 'ClientResponse',
     'ProductCreate', 'ProductUpdate', 'ProductResponse',
     'InvoiceCreate', 'InvoiceUpdate', 'InvoiceResponse',
-    'InvoiceItemCreate', 'InvoiceItemUpdate', 'InvoiceItemResponse',
+    'InvoiceItemCreate', 'InvoiceItemUpdate', 'InvoiceItemResponse'
 ]
