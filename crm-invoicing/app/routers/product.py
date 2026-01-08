@@ -28,6 +28,10 @@ async def store(product: ProductCreate, service: ProductService = Depends(get_se
     return success_response(data= data.model_dump(), message=_('products.create'), status_code=201)
 
 @router.put('{id}', name='api.products.update')
-async def update(id: int, client: ProductUpdate, service: ProductService = Depends(get_service)) -> JSONResponse:
-    data = await service.update(id, client)
+async def update(id: int, product: ProductUpdate, service: ProductService = Depends(get_service)) -> JSONResponse:
+    data = await service.update(id, product)
     return success_response(data=data.model_dump(), message=_('products.update'))
+
+@router.delete('{id}', name='api.products.delete', status_code=204)
+async def delete(id: int, service: ProductService = Depends(get_service)):
+   await service.delete(id)
