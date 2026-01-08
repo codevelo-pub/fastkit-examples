@@ -6,19 +6,15 @@ from app.schemas import ProductCreate, ProductUpdate, ProductResponse
 
 class ProductService(AsyncBaseCrudService[Product, ProductCreate, ProductUpdate, ProductResponse]):
     def __init__(self, session: Session):
-        repository = AsyncRepository(Product, session)
-        super().__init__(repository, response_schema=ProductResponse)
+        self.repository = AsyncRepository(Product, session)
+        super().__init__(self.repository, response_schema=ProductResponse)
 
-    def after_create(self, instance: Product) -> None:
-        """Generate slug after product creation."""
-        if not instance.slug:
-            # Generate slug from English name
-            source_name = instance.name.get('en', '')
-            if source_name:
-                instance.generate_slug(
-                    source_field='name',
-                    session=self.repository.session
-                )
+    async def before_create(self, data: dict) -> dict:
+        product = Product(**data)
+        product.generate_slug(source_field='name')
+        data['slug'] = product.slug
+
+        return data
 
     def find_active(self) -> list[Product]:
         """Get all active products."""

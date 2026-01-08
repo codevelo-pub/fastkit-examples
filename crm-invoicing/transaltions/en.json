@@ -11,5 +11,9 @@
   "clients": {
     "create": "The client is successfully crated",
     "update": "The client is successfully updated"
+  },
+  "products": {
+    "create": "The product is successfully crated",
+    "update": "The product is successfully updated"
   }
 }

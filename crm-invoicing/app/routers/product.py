@@ -25,3 +25,12 @@ async def index(
 ) -> JSONResponse:
     products, meta = await service.paginate(page=page, per_page=per_page)
     return paginated_response(items=[product.model_dump() for product in products], pagination=meta)
+
+@router.post('', name='api.products.store')
+async def store(product: ProductCreate, service: ProductService = Depends(get_service)) -> JSONResponse:
+    data = await service.create(product.model_dump())
+    return success_response(
+        data= data.model_dump(),
+        message=_('products.create'),
+        status_code=201
+    )
