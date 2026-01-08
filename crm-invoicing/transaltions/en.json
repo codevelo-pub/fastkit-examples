@@ -9,6 +9,7 @@
     }
   },
   "clients": {
-    "create": "The client is successfully crated"
+    "create": "The client is successfully crated",
+    "update": "The client is successfully updated"
   }
 }

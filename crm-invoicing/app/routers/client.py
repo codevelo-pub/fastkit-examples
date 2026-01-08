@@ -25,13 +25,21 @@ async def index(
         service: ClientService = Depends(get_service)
 ) -> JSONResponse:
     clients, meta = await service.paginate(page=page, per_page=per_page)
-    return paginated_response(items=clients, pagination=meta)
+    return paginated_response(items=[client.model_dump() for client in clients], pagination=meta)
 
 @router.post('', name='api.clients.store')
-async def store(client: ClientCreate, service: ClientService = Depends(get_service)):
+async def store(client: ClientCreate, service: ClientService = Depends(get_service)) -> JSONResponse:
     data = await service.create(client.model_dump())
     return success_response(
         data= data.model_dump(),
         message=_('clients.create'),
         status_code=201
+    )
+
+@router.put('{id}', name='api.clients.update')
+async def update(id: int, client: ClientUpdate, service = Depends(get_service)) -> JSONResponse:
+    data = await service.update(id, client)
+    return success_response(
+        data=data.model_dump(),
+        message=_('clients.update')
     )
