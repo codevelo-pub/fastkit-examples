@@ -4,7 +4,6 @@ from fastkit_core.http import success_response, paginated_response
 from fastkit_core.database import get_async_db
 from fastkit_core.i18n import _
 from sqlalchemy.orm import Session
-from app.models import Client
 from starlette.responses import JSONResponse
 from app.schemas import ClientCreate, ClientUpdate
 from app.services import ClientService
@@ -37,9 +36,13 @@ async def store(client: ClientCreate, service: ClientService = Depends(get_servi
     )
 
 @router.put('{id}', name='api.clients.update')
-async def update(id: int, client: ClientUpdate, service = Depends(get_service)) -> JSONResponse:
+async def update(id: int, client: ClientUpdate, service: ClientService = Depends(get_service)) -> JSONResponse:
     data = await service.update(id, client)
     return success_response(
         data=data.model_dump(),
         message=_('clients.update')
     )
+
+@router.delete('{id}', name='api.client.delete', status_code=204)
+async def delete(id: int, service: ClientService = Depends(get_service)):
+   await service.delete(id)
