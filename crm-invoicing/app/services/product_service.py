@@ -1,13 +1,13 @@
 from fastkit_core.services import AsyncBaseCrudService
-from fastkit_core.database import Repository
+from fastkit_core.database import AsyncRepository
 from sqlalchemy.orm import Session
 from app.models import Product
 from app.schemas import ProductCreate, ProductUpdate, ProductResponse
 
 class ProductService(AsyncBaseCrudService[Product, ProductCreate, ProductUpdate, ProductResponse]):
     def __init__(self, session: Session):
-        repository = Repository(Product, session)
-        super().__init__(repository)
+        repository = AsyncRepository(Product, session)
+        super().__init__(repository, response_schema=ProductResponse)
 
     def after_create(self, instance: Product) -> None:
         """Generate slug after product creation."""
