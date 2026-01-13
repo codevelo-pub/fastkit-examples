@@ -2,7 +2,7 @@ annotated-types==0.7.0
 anyio==4.12.0
 click==8.3.1
 fastapi==0.115.14
-fastkit-core==0.1.0
+fastkit-core==0.3.2
 greenlet==3.3.0
 h11==0.16.0
 httptools==0.7.1
