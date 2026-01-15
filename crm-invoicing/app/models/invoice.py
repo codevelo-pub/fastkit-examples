@@ -24,5 +24,6 @@ class Invoice(IntIdMixin, BaseWithTimestamps, SoftDeleteMixin):
     client: Mapped["Client"] = relationship(back_populates="invoices")
     items: Mapped[list["InvoiceItem"]] = relationship(
         back_populates="invoice",
+        lazy="selectin",
         cascade="all, delete-orphan"
     )

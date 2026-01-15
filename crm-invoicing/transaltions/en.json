@@ -15,5 +15,9 @@
   "products": {
     "create": "The product is successfully crated",
     "update": "The product is successfully updated"
+  },
+  "invoices": {
+    "create": "The invoice is successfully crated",
+    "update": "The invoice is successfully updated"
   }
 }

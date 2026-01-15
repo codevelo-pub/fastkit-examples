@@ -21,3 +21,8 @@ def get_service(session: Session = Depends(get_async_db)) -> InvoiceService:
 async def index(page: int = 1, per_page: int = 10, service: InvoiceService = Depends(get_service)) -> JSONResponse:
     invoices, meta = await service.paginate(page= page, per_page=per_page)
     return paginated_response(items=[invoice.model_dump() for invoice in invoices], pagination=meta)
+
+@router.post('', name='api.invoices.store')
+async def store(invoice: InvoiceCreate, service: InvoiceService = Depends(get_service)) -> JSONResponse:
+    data = await service.create_with_items(invoice)
+    return success_response(data=data.model_dump(), message=_('invoices.create'), status_code=201)
