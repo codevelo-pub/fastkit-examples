@@ -1,19 +1,16 @@
-from fastkit_core.services import AsyncBaseCrudService
+from fastkit_core.services import AsyncBaseCrudService, SlugServiceMixin
 from fastkit_core.database import AsyncRepository
 from sqlalchemy.orm import Session
 from app.models import Product
 from app.schemas import ProductCreate, ProductUpdate, ProductResponse
 
-class ProductService(AsyncBaseCrudService[Product, ProductCreate, ProductUpdate, ProductResponse]):
+class ProductService(SlugServiceMixin, AsyncBaseCrudService[Product, ProductCreate, ProductUpdate, ProductResponse]):
     def __init__(self, session: Session):
         self.repository = AsyncRepository(Product, session)
         super().__init__(self.repository, response_schema=ProductResponse)
 
     async def before_create(self, data: dict) -> dict:
-        product = Product(**data)
-        product.generate_slug(source_field='name')
-        data['slug'] = product.slug
-
+        data['slug'] = await self.async_generate_slug(data['title'])
         return data
 
     def find_active(self) -> list[Product]:
