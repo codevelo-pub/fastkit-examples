@@ -26,3 +26,8 @@ async def index(page: int = 1, per_page: int = 10, service: InvoiceService = Dep
 async def store(invoice: InvoiceCreate, service: InvoiceService = Depends(get_service)) -> JSONResponse:
     data = await service.create_with_items(invoice)
     return success_response(data=data.model_dump(), message=_('invoices.create'), status_code=201)
+
+@router.put('{id}', name='api.invoices.update')
+async def update(id: int, invoice: InvoiceUpdate, service: InvoiceService = Depends(get_service)) -> JSONResponse:
+    data = await service.update(id, invoice)
+    return success_response(data=data.model_dump(), message=_('invoice.update'))
