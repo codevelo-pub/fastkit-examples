@@ -31,3 +31,7 @@ async def store(invoice: InvoiceCreate, service: InvoiceService = Depends(get_se
 async def update(id: int, invoice: InvoiceUpdate, service: InvoiceService = Depends(get_service)) -> JSONResponse:
     data = await service.update(id, invoice)
     return success_response(data=data.model_dump(), message=_('invoice.update'))
+
+@router.delete('{id}', name='api.invoices.delete', status_code=204)
+async def destroy(id: int, service: InvoiceService = Depends(get_service)):
+    await service.delete(id)
