@@ -1,5 +1,6 @@
 from fastkit_core.validation import BaseSchema
-from pydantic import Field
+from pydantic import Field, model_validator
+from typing import Optional
 
 class InvoiceItemCreate(BaseSchema):
     product_id: int = Field(gt=0, description="Product ID")
@@ -11,10 +12,25 @@ class InvoiceItemUpdate(BaseSchema):
     unit_price: float | None = Field(None, gt=0)
 
 class InvoiceItemResponse(BaseSchema):
-    id: int
-    invoice_id: int
-    product_id: int
     quantity: int
     unit_price: float
 
+    product_name: Optional[str] = None
+    product_sku: Optional[str] = None
+    product_slug: Optional[str] = None
+    product_description: Optional[str] = None
+
     model_config = {"from_attributes": True}
+
+    @model_validator(mode='before')
+    @classmethod
+    def extract_product_data(cls, data):
+        product = getattr(data, 'product', None)
+
+        if product:
+            data.product_name = product.name
+            data.product_sku = product.sku
+            data.product_slug = product.slug
+            data.product_description = product.description
+
+        return data
