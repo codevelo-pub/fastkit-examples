@@ -1,7 +1,7 @@
 from fastkit_core.validation import BaseSchema
 from app.models.enums import InvoicesStatus
 from app.schemas.invoice_item import InvoiceItemCreate, InvoiceItemResponse
-from pydantic import Field
+from pydantic import Field, computed_field
 
 
 class InvoiceCreate(BaseSchema):
@@ -25,3 +25,8 @@ class InvoiceResponse(BaseSchema):
     items: list[InvoiceItemResponse] = []
 
     model_config = {"from_attributes": True}
+
+    @computed_field
+    @property
+    def total_amount(self) -> float:
+        return sum(item.quantity * item.unit_price for item in self.items)
