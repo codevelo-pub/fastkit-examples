@@ -1,5 +1,5 @@
 from fastkit_core.validation import BaseSchema
-from pydantic import Field, model_validator
+from pydantic import Field, model_validator, computed_field
 from typing import Optional
 
 class InvoiceItemCreate(BaseSchema):
@@ -34,3 +34,8 @@ class InvoiceItemResponse(BaseSchema):
             data.product_description = product.description
 
         return data
+
+    @computed_field
+    @property
+    def total(self) -> float:
+        return self.quantity * self.unit_price

@@ -23,7 +23,10 @@ async def index(page: int = 1, per_page: int = 10, service: InvoiceService = Dep
     invoices, meta = await service.paginate(
         page= page,
         per_page=per_page,
-        _load_relations=[selectinload(Invoice.items).selectinload(InvoiceItem.product)]
+        _load_relations=[
+            selectinload(Invoice.client),
+            selectinload(Invoice.items).selectinload(InvoiceItem.product)
+        ]
     )
     return paginated_response(items=[invoice.model_dump() for invoice in invoices], pagination=meta)
 
@@ -35,7 +38,7 @@ async def store(invoice: InvoiceCreate, service: InvoiceService = Depends(get_se
 @router.put('{id}', name='api.invoices.update')
 async def update(id: int, invoice: InvoiceUpdate, service: InvoiceService = Depends(get_service)) -> JSONResponse:
     data = await service.update(id, invoice)
-    return success_response(data=data.model_dump(), message=_('invoice.update'))
+    return success_response(data=data.model_dump(), message=_('invoices.update'))
 
 @router.delete('{id}', name='api.invoices.delete', status_code=204)
 async def destroy(id: int, service: InvoiceService = Depends(get_service)):

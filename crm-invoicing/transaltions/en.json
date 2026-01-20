@@ -18,6 +18,14 @@
   },
   "invoices": {
     "create": "The invoice is successfully crated",
-    "update": "The invoice is successfully updated"
+    "update": "The invoice is successfully updated",
+    "invoice": "Invoice",
+    "customer": "Customer",
+    "date": "Date",
+    "statuses": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "canceled": "Canceled"
+    }
   }
 }
