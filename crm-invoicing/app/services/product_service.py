@@ -10,7 +10,7 @@ class ProductService(SlugServiceMixin, AsyncBaseCrudService[Product, ProductCrea
         super().__init__(self.repository, response_schema=ProductResponse)
 
     async def before_create(self, data: dict) -> dict:
-        data['slug'] = await self.async_generate_slug(data['title'])
+        data['slug'] = await self.async_generate_slug(data['name'])
         return data
 
     def find_active(self) -> list[Product]:
