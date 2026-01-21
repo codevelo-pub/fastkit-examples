@@ -22,10 +22,16 @@
     "invoice": "Invoice",
     "customer": "Customer",
     "date": "Date",
+    "status": "Status",
     "statuses": {
       "pending": "Pending",
       "paid": "Paid",
       "canceled": "Canceled"
-    }
+    },
+    "item": "Item",
+    "quantity": "Quantity",
+    "unit_price": "Unit price",
+    "total": "Total",
+    "grand_total": "Grand Total"
   }
 }

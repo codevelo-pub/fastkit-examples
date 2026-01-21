@@ -47,5 +47,4 @@ class InvoiceResponse(BaseSchema):
     @computed_field
     @property
     def status_label(self) -> str:
-        key = f"invoices.statuses.{self.status.lower()}"
-        return _(key)
+        return _(f"invoices.statuses.{self.status.lower()}")
