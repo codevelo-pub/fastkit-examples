@@ -3,6 +3,11 @@ from fastkit_core.database import AsyncRepository
 from sqlalchemy.orm import Session
 from app.models import Invoice, InvoiceItem
 from app.schemas import InvoiceCreate, InvoiceUpdate, InvoiceResponse
+from jinja2 import Environment, FileSystemLoader
+from weasyprint import HTML
+from pathlib import Path
+from fastkit_core.i18n import _
+
 
 class InvoiceService(AsyncBaseCrudService[Invoice, InvoiceCreate, InvoiceUpdate, InvoiceResponse]):
     def __init__(self, session: Session):
@@ -21,6 +26,24 @@ class InvoiceService(AsyncBaseCrudService[Invoice, InvoiceCreate, InvoiceUpdate,
             item_data['invoice_id'] = invoice.id
             await self.invoice_item_repository.create(data=item_data, commit=True)
 
+        await self.update(invoice.id, {
+            'pdf_path': str(self.generate(invoice=invoice))
+        })
+
         await self.session.refresh(invoice, attribute_names=['items'])
 
         return InvoiceResponse.model_validate(invoice)
+
+    def generate(self, invoice: Invoice, templates_dir="templates", output_dir="storage/invoices") -> Path:
+        filename = f"invoice-{invoice.id}.pdf"
+        env = Environment(loader=FileSystemLoader(templates_dir))
+        output_dir = Path(output_dir)
+        env.globals['_'] = _
+        output_dir.mkdir(parents=True, exist_ok=True)
+        template = env.get_template("invoice.html")
+        html_content = template.render(invoice=invoice)
+
+        file_path = output_dir / filename
+        HTML(string=html_content).write_pdf(target=str(file_path))
+
+        return file_path
