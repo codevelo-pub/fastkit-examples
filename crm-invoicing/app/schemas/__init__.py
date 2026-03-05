@@ -1,4 +1,3 @@
-from app.schemas.product import ProductCreate, ProductUpdate, ProductResponse
 from app.schemas.invoice import InvoiceCreate, InvoiceUpdate, InvoiceResponse
 from app.schemas.invoice_item import (
     InvoiceItemCreate,
@@ -7,7 +6,6 @@ from app.schemas.invoice_item import (
 )
 
 __all__ = [
-    'ProductCreate', 'ProductUpdate', 'ProductResponse',
     'InvoiceCreate', 'InvoiceUpdate', 'InvoiceResponse',
     'InvoiceItemCreate', 'InvoiceItemUpdate', 'InvoiceItemResponse'
 ]
