@@ -1,21 +1,23 @@
 from fastapi import APIRouter, Depends
-from app.infrastructure.auth import current_active_user
-from fastkit_core.http import success_response, paginated_response
-from fastkit_core.database import get_async_db
-from fastkit_core.i18n import _
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
-from app.schemas import ClientCreate, ClientUpdate
-from app.services import ClientService
+from app.infrastructure.auth import current_active_user
+from fastkit_core.database import get_db
+from fastkit_core.http import success_response, paginated_response
+from fastkit_core.i18n import _
+from .service import ClientService
+from .schemas import ClientCreate, ClientUpdate
 
 router = APIRouter(
-    prefix='/clients',
-    tags=['Clients'],
-    dependencies=[Depends(current_active_user)]
+    prefix="/clients",
+    tags=["Client"],
+    dependencies=[current_active_user]
 )
 
-def get_service(session: Session = Depends(get_async_db)) -> ClientService:
+
+def get_service(session: Session = Depends(get_db)) -> ClientService:
     return ClientService(session)
+
 
 @router.get('', name='api.clients.index')
 async def index(
