@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..'
 
 load_dotenv()
 from modules.clients.models import Client  # noqa
+from modules.products.models import Product  # noqa
 target_metadata = Base.metadata
 
 
