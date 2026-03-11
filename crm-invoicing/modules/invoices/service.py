@@ -1,8 +1,8 @@
 from fastkit_core.services import AsyncBaseCrudService
 from fastkit_core.database import AsyncRepository
 from sqlalchemy.orm import Session
-from app.models import Invoice, InvoiceItem
-from app.schemas import InvoiceCreate, InvoiceUpdate, InvoiceResponse
+from modules.invoices.models import Invoice, InvoiceItem
+from modules.invoices.schemas import InvoiceCreate, InvoiceUpdate, InvoiceResponse
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 from pathlib import Path
