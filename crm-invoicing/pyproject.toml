@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "crm-invoicing"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Radomir Brkovic", email = "brkovic.radomir@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/radomirbrkovic/crm-invoicing#readme"
+Issues = "https://github.com/radomirbrkovic/crm-invoicing/issues"
+Source = "https://github.com/radomirbrkovic/crm-invoicing"
+
+[tool.hatch.version]
+path = "src/crm_invoicing/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/crm_invoicing tests}"
+
+[tool.coverage.run]
+source_pkgs = ["crm_invoicing", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/crm_invoicing/__about__.py",
+]
+
+[tool.coverage.paths]
+crm_invoicing = ["src/crm_invoicing", "*/crm-invoicing/src/crm_invoicing"]
+tests = ["tests", "*/crm-invoicing/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+[tool.hatch.envs.default]
+installer = "uv"
+type = "virtual"
