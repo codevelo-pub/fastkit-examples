@@ -1,37 +1,37 @@
 from typing import Any
-from fastkit_core.services import BaseCrudService
+from fastkit_core.services import AsyncBaseCrudService
 from fastkit_core.services import SlugServiceMixin  # Uncomment if model uses SlugMixin
 
 from .models import Product
-from .repository import ProductRepository
+from .repository import ProductAsyncRepository
 from .schemas import ProductCreate, ProductUpdate, ProductResponse
 
 
-class ProductService(SlugServiceMixin, BaseCrudService[
+class ProductService(SlugServiceMixin, AsyncBaseCrudService[
     Product,
     ProductCreate,
     ProductUpdate,
     ProductResponse
 ]):
     """
-    Service for Product business logic.
+    Async service for Product business logic.
 
-    Inherits all CRUD operations from BaseCrudService:
-        - find(id) / find_or_fail(id) / get_all() / filter(**kwargs)
-        - paginate(page, per_page) / exists(**kwargs) / count(**kwargs)
-        - create(data) / create_many(data_list)
-        - update(id, data) / update_many(filters, data)
-        - delete(id) / delete_many(filters)
+    Inherits all async CRUD operations from AsyncBaseCrudService:
+        - await find(id) / await find_or_fail(id) / await get_all() / await filter(**kwargs)
+        - await paginate(page, per_page) / await exists(**kwargs) / await count(**kwargs)
+        - await create(data) / await create_many(data_list)
+        - await update(id, data) / await update_many(filters, data)
+        - await delete(id) / await delete_many(filters)
 
     Lifecycle hooks available to override:
-        - validate_create(data) / validate_update(id, data)
-        - before_create(data) / after_create(instance)
-        - before_update(id, data) / after_update(instance)
-        - before_delete(id) / after_delete(id)
+        - async validate_create(data) / async validate_update(id, data)
+        - async before_create(data) / async after_create(instance)
+        - async before_update(id, data) / async after_update(instance)
+        - async before_delete(id) / async after_delete(id)
     """
 
     def __init__(self, session):
-        repository = ProductRepository(session)
+        repository = ProductAsyncRepository(session)
         super().__init__(repository, response_schema=ProductResponse)
 
     async def before_create(self, data: dict) -> dict:

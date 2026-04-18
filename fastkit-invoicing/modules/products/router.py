@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, status
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import ValidationError
 from starlette.responses import JSONResponse
 
-from fastkit_core.database import get_db
+from fastkit_core.database import get_async_db
 from fastkit_core.http import success_response, error_response, paginated_response
 from fastkit_core.validation.errors import format_validation_errors
 from fastkit_core.i18n import _
@@ -16,59 +16,25 @@ router = APIRouter(
 )
 
 
-def get_service(session: Session = Depends(get_db)) -> ProductService:
+def get_service(session: AsyncSession = Depends(get_async_db)) -> ProductService:
     return ProductService(session)
 
 
-@router.get("/", response_model=list[ProductResponse])
-def index(
-    page: int = 1,
-    per_page: int = 20,
-    service: ProductService = Depends(get_service),
-) -> JSONResponse:
-    items, meta = service.paginate(page=page, per_page=per_page)
-    return paginated_response(items=items, pagination=meta)
+@router.get('', name='api.products.index')
+async def index(page: int = 1, per_page: int = 10, service: ProductService = Depends(get_service)) -> JSONResponse:
+    products, meta = await service.paginate(page=page, per_page=per_page)
+    return paginated_response(items=[product.model_dump() for product in products], pagination=meta)
 
+@router.post('', name='api.products.store')
+async def store(product: ProductCreate, service: ProductService = Depends(get_service)) -> JSONResponse:
+    data = await service.create(product.model_dump())
+    return success_response(data= data.model_dump(), message=_('products.create'), status_code=201)
 
-@router.get("/{id}", response_model=ProductResponse)
-def show(
-    id: int,
-    service: ProductService = Depends(get_service),
-) -> JSONResponse:
-    item = service.find_or_fail(id)
-    return success_response(data=item.model_dump())
+@router.put('{id}', name='api.products.update')
+async def update(id: int, product: ProductUpdate, service: ProductService = Depends(get_service)) -> JSONResponse:
+    data = await service.update(id, product)
+    return success_response(data=data.model_dump(), message=_('products.update'))
 
-
-@router.post("/", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
-def store(
-    data: ProductCreate,
-    service: ProductService = Depends(get_service),
-) -> JSONResponse:
-    try:
-        item = service.create(data)
-        return success_response(data=item.model_dump(), status_code=status.HTTP_201_CREATED)
-    except ValidationError as e:
-        errors = format_validation_errors(e.errors())
-        return error_response(message=_('validation.failed'), errors=errors, status_code=422)
-
-
-@router.put("/{id}", response_model=ProductResponse)
-def update(
-    id: int,
-    data: ProductUpdate,
-    service: ProductService = Depends(get_service),
-) -> JSONResponse:
-    try:
-        item = service.update(id, data)
-        return success_response(data=item.model_dump())
-    except ValidationError as e:
-        errors = format_validation_errors(e.errors())
-        return error_response(message=_('validation.failed'), errors=errors, status_code=422)
-
-
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def destroy(
-    id: int,
-    service: ProductService = Depends(get_service),
-) -> None:
-    service.delete(id)
+@router.delete('{id}', name='api.products.delete', status_code=204)
+async def delete(id: int, service: ProductService = Depends(get_service)):
+   await service.delete(id)
