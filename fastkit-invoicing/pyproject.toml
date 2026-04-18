@@ -10,6 +10,7 @@ dependencies = [
     "fastkit-core[postgresql-async,redis]>=0.4.0",
     "mailbridge>=2.1.0",
     "psycopg2-binary>=2.9.11",
+    "pydantic[email]>=2.13.2",
 ]
 
 [dependency-groups]
