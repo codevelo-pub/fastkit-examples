@@ -24,6 +24,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 from modules.clients.models import Clients  # noqa
 from modules.products.models import Product  # noqa
+from modules.invoices.models import Invoice  # noqa
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
