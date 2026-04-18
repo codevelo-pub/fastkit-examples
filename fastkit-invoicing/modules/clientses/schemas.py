@@ -1,36 +1,25 @@
 from typing import Any
-from pydantic import Field
+from pydantic import Field, EmailStr
 from fastkit_core.validation import (
     BaseSchema,
     BaseCreateSchema,
-    BaseUpdateSchema,
-    # min_length,       # Uncomment for string min length: name: str = min_length(3)
-    # max_length,       # Uncomment for string max length: name: str = max_length(100)
-    # length,           # Uncomment for string length range: name: str = length(3, 100)
-    # min_value,        # Uncomment for numeric min: price: float = min_value(0.01)
-    # max_value,        # Uncomment for numeric max: stock: int = max_value(1000)
-    # between,          # Uncomment for numeric range: rating: float = between(1.0, 5.0)
-    # pattern,          # Uncomment for regex: code: str = pattern(r'^[A-Z]{3}$')
-    # SlugValidatorMixin,       # Uncomment if model uses SlugMixin
-    # PasswordValidatorMixin,   # Uncomment for standard password validation
-    # StrongPasswordValidatorMixin,  # Uncomment for strong password validation
-    # UsernameValidatorMixin,   # Uncomment for username validation
+    BaseUpdateSchema
 )
+from app.models.enums import Languages
 
 
 class ClientsCreate(BaseCreateSchema):
-    """
-    Schema for creating a new Clients.
+    name: str = Field(min_length=1, max_length=255)
+    description: str | None = Field(None, max_length=255)
+    language: Languages = Field(default=Languages.EN)
 
-    Add fields that are required on creation.
-    Use validation rules from fastkit_core.validation for constraints.
+    email: EmailStr | None = None
+    phone: str | None = Field(None, max_length=50)
 
-    Example:
-        name: str = min_length(3)
-        price: float = min_value(0.01)
-        description: str | None = None
-    """
-    pass  # Replace with actual fields
+    address: str | None = Field(None, max_length=500)
+    city: str | None = Field(None, max_length=100)
+    country: str | None = Field(None, max_length=100)
+    postal_code: str | None = Field(None, max_length=20)
 
 
 class ClientsUpdate(BaseUpdateSchema):
