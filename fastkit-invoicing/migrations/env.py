@@ -22,7 +22,7 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
-from modules.clientses.models import Clients  # noqa
+from modules.clients.models import Clients  # noqa
 from modules.products.models import Product  # noqa
 target_metadata = Base.metadata
 
