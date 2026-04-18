@@ -35,19 +35,12 @@ class ClientsUpdate(BaseUpdateSchema):
 
 
 class ClientsResponse(BaseSchema):
-    """
-    Schema for Clients API responses.
-
-    Include all fields that should be returned to the client.
-    Always include id and timestamps from BaseWithTimestamps.
-
-    model_config from_attributes=True is required for SQLAlchemy model mapping.
-    """
     id: int
-    # Add your fields here
-    # Example:
-    # name: str
-    # price: float
-    # description: str | None = None
-    created_at: Any = None
-    updated_at: Any = None
+    name: str
+    description: str | None
+    email: str | None
+    phone: str | None
+    address: str | None
+    city: str | None
+    country: str | None
+    postal_code: str | None
