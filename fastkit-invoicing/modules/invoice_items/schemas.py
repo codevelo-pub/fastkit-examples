@@ -13,16 +13,8 @@ class InvoiceItemCreate(BaseCreateSchema):
 
 
 class InvoiceItemUpdate(BaseUpdateSchema):
-    """
-    Schema for updating an existing InvoiceItem.
-
-    All fields should be optional (| None = None) to support partial updates.
-
-    Example:
-        name: str | None = None
-        price: float | None = None
-    """
-    pass  # Replace with actual fields
+    quantity: int | None = Field(None, ge=1)
+    unit_price: float | None = Field(None, gt=0)
 
 
 class InvoiceItemResponse(BaseSchema):
