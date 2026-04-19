@@ -18,19 +18,28 @@ class InvoiceItemUpdate(BaseUpdateSchema):
 
 
 class InvoiceItemResponse(BaseSchema):
-    """
-    Schema for InvoiceItem API responses.
+    quantity: int
+    unit_price: float
 
-    Include all fields that should be returned to the client.
-    Always include id and timestamps from BaseWithTimestamps.
+    product_name: Optional[str] = None
+    product_sku: Optional[str] = None
+    product_slug: Optional[str] = None
+    product_description: Optional[str] = None
 
-    model_config from_attributes=True is required for SQLAlchemy model mapping.
-    """
-    id: int
-    # Add your fields here
-    # Example:
-    # name: str
-    # price: float
-    # description: str | None = None
-    created_at: Any = None
-    updated_at: Any = None
+    @model_validator(mode='before')
+    @classmethod
+    def extract_product_data(cls, data):
+        product = getattr(data, 'product', None)
+
+        if product:
+            data.product_name = product.name
+            data.product_sku = product.sku
+            data.product_slug = product.slug
+            data.product_description = product.description
+
+        return data
+
+    @computed_field
+    @property
+    def total(self) -> float:
+        return self.quantity * self.unit_price
