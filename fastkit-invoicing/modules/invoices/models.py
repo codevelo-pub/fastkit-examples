@@ -10,7 +10,7 @@ from fastkit_core.database import (
 )
 
 if TYPE_CHECKING:
-    from modules.clients.models import Client
+    from modules.clients.models import Clients
     from modules.invoice_items.models import InvoiceItem
 
 
@@ -26,7 +26,7 @@ class Invoice(BaseWithTimestamps, IntIdMixin, SoftDeleteMixin):
         nullable=False
     )
 
-    client: Mapped["Client"] = relationship(back_populates="invoices")
+    client: Mapped["Clients"] = relationship(back_populates="invoices")
     items: Mapped[list["InvoiceItem"]] = relationship(
         back_populates="invoice",
         lazy="selectin",

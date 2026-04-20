@@ -28,12 +28,14 @@ class InvoiceResponse(BaseSchema):
     invoice_number: str
     client_id: int
     status: InvoicesStatus
-    pdf_path: str | None
+    pdf_path: str | None = None
     created_at: datetime | None = None
 
     # Nested relationships (optional)
     client: Optional[ClientResponse] = None
     items: list[InvoiceItemResponse] = []
+
+    model_config = {"from_attributes": True}
 
     @field_serializer('created_at')
     def serialize_datetime(self, dt: datetime | None, _info):
