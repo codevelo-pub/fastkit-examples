@@ -361,23 +361,24 @@ wheels = [
 
 [[package]]
 name = "fastkit-cli"
-version = "0.2.0"
+version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alembic" },
     { name = "fastkit-core" },
+    { name = "inflect" },
     { name = "jinja2" },
     { name = "typer" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/66/c7/624075c339dda30a069d3e47f7e9002328bb0eaca114d93f3bf9cfb6d623/fastkit_cli-0.2.0.tar.gz", hash = "sha256:6cb0a114b223d66fabf71528675696a4b4e6a74609be3d5360a0628430e5a4e0", size = 12108, upload-time = "2026-04-11T20:03:28.511Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/24/1c/3ae4a1069e9c932527cb0521b3d82a779128945ceaaade3844c37363974b/fastkit_cli-0.2.2.tar.gz", hash = "sha256:37dbbe305cee4b380b14f1ef66e42e1befe266c0a256df421ad1c6e869232fd7", size = 12184, upload-time = "2026-04-22T18:18:22.586Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dc/cb/a5d9d01a77f6d6df95577d1351a66b952d98ac44267f28e84cc3715531c9/fastkit_cli-0.2.0-py3-none-any.whl", hash = "sha256:4116e4abf3858246f31b90aa8c17dcb16b30f66fc3739694bbc5887615b86742", size = 19427, upload-time = "2026-04-11T20:03:27.324Z" },
+    { url = "https://files.pythonhosted.org/packages/c3/f8/260eef09b19df94ea4476b3691f95560dc10189dcbd39fe2b3298c4f9691/fastkit_cli-0.2.2-py3-none-any.whl", hash = "sha256:03a9863c96916f3f9ad33d31f3203e485943a974bb5b9bcf802987f232c6bcfd", size = 19486, upload-time = "2026-04-22T18:18:21.266Z" },
 ]
 
 [[package]]
 name = "fastkit-core"
-version = "0.4.0"
+version = "0.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
@@ -387,9 +388,9 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "uvicorn", extra = ["standard"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9e/36/5f3bc39708b9a5794b1023978afd5afde03c0050112de1078f470bbdbbcc/fastkit_core-0.4.0.tar.gz", hash = "sha256:5728995d69bcc3620bd4eb309f87dc4f25236757ef900b45306da7f4c62d2b86", size = 155731, upload-time = "2026-04-11T11:24:19.055Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d3/e1/9575c4fb90f04a6f9e08f07346be91c57ab13d927b612ead5eb5d27c2e5c/fastkit_core-0.4.1.tar.gz", hash = "sha256:4df4dee40cadcfcade68e7513e5b34c7984449703e5b498ec82a4b85d6c85417", size = 155528, upload-time = "2026-04-21T06:14:54.979Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b9/f9/92ea02f3ef28fd2542c400bc874961a1267af9f29cf6d8a44fcd88c85d1a/fastkit_core-0.4.0-py3-none-any.whl", hash = "sha256:090a7b6da4df909d0608ee39d02df40c7327cb8521743a64b9335604aaa628ed", size = 71341, upload-time = "2026-04-11T11:24:17.407Z" },
+    { url = "https://files.pythonhosted.org/packages/99/cd/6a1f186d10c1b9b2dc87047a9e193e1ad59444e650b2751142e95a205a14/fastkit_core-0.4.1-py3-none-any.whl", hash = "sha256:cb43c352a996521cf7af76fb447caa47593c9079424ebacc5942a9f4a9d58d42", size = 71591, upload-time = "2026-04-21T06:14:53.006Z" },
 ]
 
 [package.optional-dependencies]
@@ -426,7 +427,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "alembic", specifier = ">=1.18.4" },
-    { name = "fastkit-cli", specifier = ">=0.2.0" },
+    { name = "fastkit-cli", specifier = ">=0.2.2" },
     { name = "fastkit-core", extras = ["postgresql-async", "redis"], specifier = ">=0.4.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "mailbridge", specifier = ">=2.1.0" },
@@ -606,6 +607,19 @@ wheels = [
 ]
 
 [[package]]
+name = "inflect"
+version = "7.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "more-itertools" },
+    { name = "typeguard" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/78/c6/943357d44a21fd995723d07ccaddd78023eace03c1846049a2645d4324a3/inflect-7.5.0.tar.gz", hash = "sha256:faf19801c3742ed5a05a8ce388e0d8fe1a07f8d095c82201eb904f5d27ad571f", size = 73751, upload-time = "2024-12-28T17:11:18.897Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8a/eb/427ed2b20a38a4ee29f24dbe4ae2dafab198674fe9a85e3d6adf9e5f5f41/inflect-7.5.0-py3-none-any.whl", hash = "sha256:2aea70e5e70c35d8350b8097396ec155ffd68def678c7ff97f51aa69c1d92344", size = 35197, upload-time = "2024-12-28T17:11:15.931Z" },
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -732,6 +746,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
+]
+
+[[package]]
+name = "more-itertools"
+version = "11.0.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/f7/139d22fef48ac78127d18e01d80cf1be40236ae489769d17f35c3d425293/more_itertools-11.0.2.tar.gz", hash = "sha256:392a9e1e362cbc106a2457d37cabf9b36e5e12efd4ebff1654630e76597df804", size = 144659, upload-time = "2026-04-09T15:01:33.297Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cb/98/6af411189d9413534c3eb691182bff1f5c6d44ed2f93f2edfe52a1bbceb8/more_itertools-11.0.2-py3-none-any.whl", hash = "sha256:6e35b35f818b01f691643c6c611bc0902f2e92b46c18fffa77ae1e7c46e912e4", size = 71939, upload-time = "2026-04-09T15:01:32.21Z" },
 ]
 
 [[package]]
@@ -1254,6 +1277,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/1f/cfe2f6b30557c92b3f31d41707e09cef5c1efbd87392bc6c0430c46b0e4d/tinyhtml5-2.1.0.tar.gz", hash = "sha256:60a50ec3d938a37e491efa01af895853060943dcebb5627de5b10d188b338a67", size = 179242, upload-time = "2026-03-05T17:06:30.704Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/52/48/01695a036b695f83fea7aef6955d735db0f517b1c8e25ddb399ac0bdbcbf/tinyhtml5-2.1.0-py3-none-any.whl", hash = "sha256:6e11cfff38515834268daf89d5f85bbde0b6dd02e8d9e212d1385c2289b89f0a", size = 39686, upload-time = "2026-03-05T17:06:28.498Z" },
+]
+
+[[package]]
+name = "typeguard"
+version = "4.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2b/e8/66e25efcc18542d58706ce4e50415710593721aae26e794ab1dec34fb66f/typeguard-4.5.1.tar.gz", hash = "sha256:f6f8ecbbc819c9bc749983cc67c02391e16a9b43b8b27f15dc70ed7c4a007274", size = 80121, upload-time = "2026-02-19T16:09:03.392Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/91/88/b55b3117287a8540b76dbdd87733808d4d01c8067a3b339408c250bb3600/typeguard-4.5.1-py3-none-any.whl", hash = "sha256:44d2bf329d49a244110a090b55f5f91aa82d9a9834ebfd30bcc73651e4a8cc40", size = 36745, upload-time = "2026-02-19T16:09:01.6Z" },
 ]
 
 [[package]]
