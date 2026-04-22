@@ -29,7 +29,7 @@ async def index(page: int = 1, per_page: int = 10, service: InvoiceService = Dep
             selectinload(Invoice.items).selectinload(InvoiceItem.product)
         ]
     )
-    return paginated_response(items=[invoice.model_dump() for invoice in invoices], pagination=meta)
+    return paginated_response(items=invoices, pagination=meta)
 
 @router.post('', name='api.invoices.store')
 async def store(invoice: InvoiceCreate, service: InvoiceService = Depends(get_service)) -> JSONResponse:

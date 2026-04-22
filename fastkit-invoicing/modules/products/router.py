@@ -23,7 +23,7 @@ def get_service(session: AsyncSession = Depends(get_async_db)) -> ProductService
 @router.get('', name='api.products.index')
 async def index(page: int = 1, per_page: int = 10, service: ProductService = Depends(get_service)) -> JSONResponse:
     products, meta = await service.paginate(page=page, per_page=per_page)
-    return paginated_response(items=[product.model_dump() for product in products], pagination=meta)
+    return paginated_response(items=products, pagination=meta)
 
 @router.post('', name='api.products.store')
 async def store(product: ProductCreate, service: ProductService = Depends(get_service)) -> JSONResponse:
