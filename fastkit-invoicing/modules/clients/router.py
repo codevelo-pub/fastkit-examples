@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import ValidationError
 from starlette.responses import JSONResponse
@@ -22,12 +22,22 @@ def get_service(session: AsyncSession = Depends(get_async_db)) -> ClientsService
 
 @router.get("/", response_model=list[ClientsResponse])
 async def index(
-    page: int = 1,
-    per_page: int = 20,
+    cursor: str | None = Query(default=None, description="Cursor for next page, obtained from previous response"),
+    per_page: int = Query(default=20, ge=1, le=100),
     service: ClientsService = Depends(get_service),
 ) -> JSONResponse:
-    items, meta = await service.paginate(page=page, per_page=per_page)
-    return paginated_response(items=items, pagination=meta)
+    items, next_cursor = await service.cursor_paginate(
+        per_page=per_page,
+        cursor_field='id',
+        direction='asc',
+        cursor=cursor
+    )
+    return success_response(data={
+        'items': [item.model_dump() for item in items],
+        'next_cursor': next_cursor,
+        'per_page': per_page,
+        'has_next': next_cursor is not None,
+    })
 
 
 @router.get("/{id}", response_model=ClientsResponse)
