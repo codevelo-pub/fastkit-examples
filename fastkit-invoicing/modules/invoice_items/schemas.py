@@ -6,10 +6,13 @@ from fastkit_core.validation import (
     BaseUpdateSchema,
 )
 
+TranslatableField = dict[str, str]
+
+
 class InvoiceItemCreate(BaseCreateSchema):
     product_id: int = Field(gt=0, description="Product ID")
     quantity: int = Field(default=1, ge=1, description="Quantity (min: 1)")
-    unit_price: float =  Field(gt=0, description="Unit Price")
+    unit_price: float = Field(gt=0, description="Unit Price")
 
 
 class InvoiceItemUpdate(BaseUpdateSchema):
@@ -21,10 +24,10 @@ class InvoiceItemResponse(BaseSchema):
     quantity: int
     unit_price: float
 
-    product_name: Optional[str] = None
+    product_name: Optional[TranslatableField] = None
     product_sku: Optional[str] = None
     product_slug: Optional[str] = None
-    product_description: Optional[str] = None
+    product_description: Optional[TranslatableField] = None
 
     model_config = {"from_attributes": True}
 

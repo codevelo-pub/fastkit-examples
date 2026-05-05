@@ -1,7 +1,8 @@
+import json
 from typing import Any
 from fastkit_core.services import AsyncBaseCrudService
 from fastkit_core.services import SlugServiceMixin
-from fastkit_core.cache import cache
+from fastkit_core.cache import cache, get_cache
 from fastkit_core.cache.decorators import cached
 
 from .models import Product
@@ -38,12 +39,21 @@ class ProductService(SlugServiceMixin, AsyncBaseCrudService[
     # Cached reads
     # -------------------------------------------------------------------------
 
-    @cached(
-        ttl=CACHE_TTL,
-        key=lambda self, page=1, per_page=10: ProductService._page_cache_key(page, per_page)
-    )
     async def paginate(self, page: int = 1, per_page: int = 10):
-        return await super().paginate(page=page, per_page=per_page)
+        cache_key = self._page_cache_key(page, per_page)
+        cached_raw = await get_cache().get(cache_key)
+
+        if cached_raw is not None:
+            data = json.loads(cached_raw)
+            return data['items'], data['meta']
+
+        items, meta = await super().paginate(page=page, per_page=per_page)
+        payload = json.dumps({
+            'items': [item.model_dump() for item in items],
+            'meta': meta,
+        })
+        await get_cache().set(cache_key, payload, ttl=CACHE_TTL)
+        return items, meta
 
     @cached(
         ttl=CACHE_TTL,
